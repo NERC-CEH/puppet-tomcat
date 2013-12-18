@@ -1,18 +1,43 @@
-################################################################################
+#
 # Definition: tomcat::instance
 #
-################################################################################
+# A class to create instances of tomcat to run under the tomcat7 user
+#
+# Parameters:
+# - The $http_port to bind this tomcat instance to
+# - The $ajp_port to bind this tomcat instance to
+# - The $shutdown_port for this tomcat instance to listen to
+# - Whether or not tomcat should have its $service_enable(d)
+# - The $service_ensure state
+#
+# Authors:
+#   Christopher Johnson - cjohn@ceh.ac.uk
+#
+# Requires:
+#   - The tomcat class
+#   - authbind if binding to ports lower than 1024
+#
 define tomcat::instance(
-    $ensure        = "present",
     $http_port     = undef,
     $ajp_port      = undef,
     $shutdown_port = "8005",
     $service_enable = true,
     $service_ensure = 'running',
 ) {
-    $dir        = "${tomcat::params::home}/${title}"
-    $service_name   = "tomcat7-${title}"
+    require tomcat
 
+    $dir            = "${tomcat::params::home}/${name}"
+    $service_name   = "tomcat7-${name}"
+
+    # On debian, ports below and including 1024 are privileged
+    # To use these, we must authbind
+    if $http_port and $http_port <= 1024 {
+        $authbind = true
+        authbind::byport { $http_port: 
+            uid     => $tomcat::params::uid,
+            before  => Service[$service_name]
+        }
+    }
 
     # Make sure Tomcat instance was created
     # This uses the tomcat-user package scripts to create the instance
@@ -21,7 +46,6 @@ define tomcat::instance(
         user    => $tomcat::params::user,
         group   => $tomcat::params::group,
         creates => $dir,
-        require => Package['tomcat7-user'],
         path    => "/usr/bin:/usr/sbin:/bin",
     }
 
@@ -65,5 +89,4 @@ define tomcat::instance(
         ensure => $service_ensure,
         enable => $service_enable,  
     }
-
 }

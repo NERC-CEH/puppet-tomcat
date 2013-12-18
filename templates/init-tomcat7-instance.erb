@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# /etc/init.d/tomcat7 -- startup script for the Tomcat 7 servlet engine in /home/vagrant/tomcat
+# /etc/init.d/tomcat7
 #
 # Written by Miquel van Smoorenburg <miquels@cistron.nl>.
 # Modified for Debian GNU/Linux        by Ian Murdock <imurdock@gnu.ai.mit.edu>.
@@ -26,8 +26,8 @@ set -e
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 PRIMARY_NAME=tomcat7
-NAME=tomcat7-vagrant
-DESC="Tomcat 7 servlet engine for Vagrant"
+NAME=tomcat7-<%=@name%>
+DESC="Tomcat 7 servlet engine for"
 DEFAULT=/etc/default/$NAME
 JVM_TMP=/tmp/tomcat7-$NAME-tmp
 
