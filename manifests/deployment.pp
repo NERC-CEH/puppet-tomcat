@@ -47,7 +47,6 @@ define tomcat::deployment(
       group    => $group,
       artifact => $artifact,
       version  => $version,
-      require  => Tomcat::Instance[$tomcat],
     }
   }
   
