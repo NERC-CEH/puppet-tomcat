@@ -1,26 +1,27 @@
+# == Define: tomcat::instance
 #
-# Definition: tomcat::instance
+# A class to create instances of tomcat to run under the tomcat7 user. 
 #
-# A class to create instances of tomcat to run under the tomcat7 user
+# === Parameters
 #
-# Parameters:
-# - The $http_port to bind this tomcat instance to
-# - The $ajp_port to bind this tomcat instance to
-# - The $shutdown_port for this tomcat instance to listen to
-# - Whether or not tomcat should have its $service_enable(d)
-# - The $service_ensure state
+# [*http_port*] The $http_port to bind this tomcat instance to
+# [*ajp_port*] The $ajp_port to bind this tomcat instance to
+# [*shutdown_port*] The $shutdown_port for this tomcat instance to listen to
+# [*service_enable*] Whether or not tomcat should have its $service_enable(d)
+# [*service_ensure*] The $service_ensure state
 #
-# Authors:
-#   Christopher Johnson - cjohn@ceh.ac.uk
+# === Requires
+# - The tomcat class
+# - authbind if binding to ports lower than 1024
 #
-# Requires:
-#   - The tomcat class
-#   - authbind if binding to ports lower than 1024
+# === Authors
+#
+# Christopher Johnson - cjohn@ceh.ac.uk
 #
 define tomcat::instance(
-    $http_port     = undef,
-    $ajp_port      = undef,
-    $shutdown_port = "8005",
+    $http_port      = undef,
+    $ajp_port       = undef,
+    $shutdown_port  = "8005",
     $service_enable = true,
     $service_ensure = 'running',
 ) {

@@ -1,35 +1,37 @@
-#
-# Definition: tomcat::deployment
+# == Define: tomcat::deployment
 #
 # This class is capable of deploying nexus artifacts and war files
-# to an instance of tomcat
+# to an instance of tomcat.
 #
-# Authors:
-#   Christopher Johnson - cjohn@ceh.ac.uk
+# === Parameters
 #
-# Parameters:
-# - The $application to deploy
-# - The $tomcat instance to deploy the application to
-# - The $war file to deploy, this takes priority over nexus deployments
-# - The $nexus instance to obtain the war file from
-# - The $repo in the nexus instance to obtain the war
-# - The $group of the war artifact
-# - The $artifact name
-# - The $version of the artifact
+# [*tomcat*] The $tomcat instance to deploy the application to
+# [*group*] The $group of the war artifact
+# [*artifact*] The $artifact name
+# [*application*] The $application to deploy
+# [*war*] The $war file to deploy, this takes priority over nexus deployments
+# [*nexus*] The $nexus instance to obtain the war file from
+# [*repo*] The $repo in the nexus instance to obtain the war
+# [*version*] The $version of the artifact
 #
-# Requires:
-# - The nexus module, if doing nexus deployments
+# === Requires
+# - The nexus module if doing nexus deployments
+#
+# === Authors
+#
+# Christopher Johnson - cjohn@ceh.ac.uk
 #
 define tomcat::deployment(
-  $application = 'ROOT',
   $tomcat,
-  $war = undef,
-  $nexus = $nexus::params::nexus,
-  $repo = $nexus::params::repo,
   $group,
   $artifact,
-  $version = $nexus::params::version
+  $application  = 'ROOT',
+  $war          = undef,
+  $nexus        = undef,
+  $repo         = undef,
+  $version      = undef
 ) {
+
   $webapp = "${tomcat::params::home}/${tomcat}/webapps/${application}"
   $warfile = "${webapp}.war"
 

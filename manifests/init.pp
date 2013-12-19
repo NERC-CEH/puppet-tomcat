@@ -1,10 +1,10 @@
-#
-# Definition: tomcat
+# == Class: tomcat
 #
 # A class to obtain the packages requires for deploying tomcat instances
 #
-# Authors:
-#   Christopher Johnson - cjohn@ceh.ac.uk
+# === Authors
+#
+# Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
 ) inherits tomcat::params {
