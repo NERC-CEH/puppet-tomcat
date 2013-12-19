@@ -1,19 +1,15 @@
-# JAVA_OPTS modifications for DSpace
-JAVA_OPTS="${JAVA_OPTS} -Xmx1024M -Xms256M"
-JAVA_OPTS="${JAVA_OPTS} -XX:MaxPermSize=128M"
-JAVA_OPTS="${JAVA_OPTS} -XX:PermSize=64M"
-JAVA_OPTS="${JAVA_OPTS} -Dconfig.file=/home/tomcat7/config/dev.properties"
+# This defaults file is managed by the tomcat puppet module.
+# Editing is futile !
 
-# Use the Java security manager? (yes/no, default: no)
-#TOMCAT7_SECURITY=no
+<%# Loop over the non standard options %>
+<%- @non_standard_opts.each do |property| -%>
+JAVA_OPTS="${JAVA_OPTS} -X<%=property%>"
+<%- end -%>
 
-# Number of days to keep logfiles in /var/log/tomcat7. Default is 14 days.
-#LOGFILE_DAYS=14
-
-# Location of the JVM temporary directory
-# WARNING: This directory will be destroyed and recreated at every startup !
-#JVM_TMP=/tmp/tomcat7-temp
-
+<%#Loop over the properties %>
+<%- @system_properties.each_pair do |key, value| -%>
+JAVA_OPTS="${JAVA_OPTS} -D<%=key%>=<%=value%>"
+<%- end -%>
 
 # If you run Tomcat on port numbers that are all higher than 1023, then you
 # do not need authbind.  It is used for binding Tomcat to lower port numbers.
