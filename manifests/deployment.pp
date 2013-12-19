@@ -58,4 +58,6 @@ define tomcat::deployment(
     refreshonly => true,
     path        => "/usr/bin:/usr/sbin:/bin",
   }
+
+  Tomcat::Instance[$tomcat] -> File[$warfile]
 }

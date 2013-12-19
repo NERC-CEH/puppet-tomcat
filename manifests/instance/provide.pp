@@ -47,4 +47,6 @@ define tomcat::instance::provide (
       extension => 'jar',
     }
   }
+
+  Tomcat::Instance[$tomcat] -> File[$jarfile]
 }
