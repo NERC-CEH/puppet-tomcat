@@ -28,12 +28,13 @@ define tomcat::instance::provide (
   $version      = undef,
   $jarname      = $artifact
 ) {
-  $jarfile = "${tomcat::params::home}/${tomcat}/lib/${jarname}.jar"
+  $tomcatLib = "${tomcat::params::home}/${tomcat}/lib"
+  $jarfile = "${tomcatLib}/${jarname}.jar"
 
   if $jar {
     #Just load the jar file from the specified location
     file { $jarfile:
-      source  => $jat
+      source  => $jar
     }
   }
   else {
@@ -48,5 +49,5 @@ define tomcat::instance::provide (
     }
   }
 
-  Tomcat::Instance[$tomcat] -> File[$jarfile]
+  File[$tomcatLib] -> File[$jarfile]
 }

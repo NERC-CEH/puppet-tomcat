@@ -31,8 +31,8 @@ define tomcat::deployment(
   $artifact     = undef,
   $version      = undef
 ) {
-
-  $webapp = "${tomcat::params::home}/${tomcat}/webapps/${application}"
+  $tomcatBase = "${tomcat::params::home}/${tomcat}"
+  $webapp = "${tomcatBase}/webapps/${application}"
   $warfile = "${webapp}.war"
 
   if $war {
@@ -59,5 +59,5 @@ define tomcat::deployment(
     path        => "/usr/bin:/usr/sbin:/bin",
   }
 
-  Tomcat::Instance[$tomcat] -> File[$warfile]
+  Exec["create instance at $tomcatBase"] -> File[$warfile]
 }
