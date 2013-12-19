@@ -6,12 +6,12 @@
 # === Parameters
 #
 # [*tomcat*] The $tomcat instance to deploy the application to
-# [*group*] The $group of the war artifact
-# [*artifact*] The $artifact name
 # [*application*] The $application to deploy
 # [*war*] The $war file to deploy, this takes priority over nexus deployments
 # [*nexus*] The $nexus instance to obtain the war file from
 # [*repo*] The $repo in the nexus instance to obtain the war
+# [*group*] The $group of the war artifact
+# [*artifact*] The $artifact name
 # [*version*] The $version of the artifact
 #
 # === Requires
@@ -23,12 +23,12 @@
 #
 define tomcat::deployment(
   $tomcat,
-  $group,
-  $artifact,
   $application  = 'ROOT',
   $war          = undef,
   $nexus        = undef,
   $repo         = undef,
+  $group        = undef,
+  $artifact     = undef,
   $version      = undef
 ) {
 

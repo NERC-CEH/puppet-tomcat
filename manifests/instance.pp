@@ -61,6 +61,15 @@ define tomcat::instance(
         require => Exec["create instance at $dir"],
     }
 
+    # Ensure that there is a place for external libs to be
+    # provided to
+    file {"${dir}/lib":
+        ensure  => directory,
+        owner   => $tomcat::params::user,
+        group   => $tomcat::params::group,
+        require => Exec["create instance at $dir"],
+    }
+
     # set up defaults file for this instance
     file { "/etc/default/${service_name}" :
         ensure  => file,

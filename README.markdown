@@ -41,6 +41,14 @@ or from a war file
         application => 'secondApp'
     }
 
+You can also provide a tomcat base with additional jar files 
+
+    tomcat::instance::provide { 'Provide myTomcat with jar from nexus' :
+        tomcat   => 'myTomcat',
+        group    => 'my.custom.jar',
+        artifact => 'provided-to-tomcat',
+    }
+
 ## Limitations
 
 This module has been tested on ubuntu 12.04 lts
