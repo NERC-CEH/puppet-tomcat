@@ -55,6 +55,7 @@ define tomcat::instance(
     group   => $tomcat::params::group,
     creates => $dir,
     path    => "/usr/bin:/usr/sbin:/bin",
+    notify  => Service[$service_name],
   }
 
   # Override the default server.xml file
@@ -66,6 +67,7 @@ define tomcat::instance(
     mode    => 0644,
     content => template("tomcat/server.xml.erb"),
     require => Exec["create instance at $dir"],
+    notify  => Service[$service_name],
   }
 
   # Ensure that there is a place for external libs to be provided to
@@ -74,6 +76,7 @@ define tomcat::instance(
     owner   => $tomcat::params::user,
     group   => $tomcat::params::group,
     require => Exec["create instance at $dir"],
+    notify  => Service[$service_name],
   }
 
   # set up defaults file for this instance
@@ -83,6 +86,7 @@ define tomcat::instance(
     group   => root,
     content => template("tomcat/default-tomcat7-instance.erb"),
     require => Exec["create instance at $dir"],
+    notify  => Service[$service_name],
   }  
 
   # set up an init script for this instance
@@ -93,12 +97,14 @@ define tomcat::instance(
     mode    => 755,
     content => template("tomcat/init-tomcat7-instance.erb"),
     require => Exec["create instance at $dir"],
+    notify  => Service[$service_name],
   }
 
   file { "${dir}/conf/policy.d" :
-    ensure => link,
-    target => '/etc/tomcat7/policy.d',
+    ensure  => link,
+    target  => '/etc/tomcat7/policy.d',
     require => Exec["create instance at $dir"],
+    notify  => Service[$service_name],
   }
 
   service { $service_name :

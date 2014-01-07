@@ -30,6 +30,14 @@ class tomcat (
         managehome  => true,
     }
 
+    # Ensure tomcat7 owns its home, without this puppet seems to create the
+    # tomcat7 home owned by root
+    file { $home :
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+    }
+
     # install the package, but disable the default Tomcat service
     service { 'tomcat7':
         enable    => false,

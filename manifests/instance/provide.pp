@@ -49,5 +49,5 @@ define tomcat::instance::provide (
     }
   }
 
-  File[$tomcatLib] -> File[$jarfile]
+  File[$jarfile] ~> Service["tomcat7-${tomcat}"]
 }
