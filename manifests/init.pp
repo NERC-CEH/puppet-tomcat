@@ -7,7 +7,11 @@
 # Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
-) inherits tomcat::params {
+  $uid      = 232
+  $user     = 'tomcat7'
+  $group    = 'tomcat7'
+  $home     = '/home/tomcat7'
+) {
 
     # Require these base packages are installed
     package { 'tomcat7':

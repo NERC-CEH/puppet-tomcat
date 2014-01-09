@@ -28,7 +28,7 @@ define tomcat::instance::provide (
   $version      = undef,
   $jarname      = $artifact
 ) {
-  $tomcatLib = "${tomcat::params::home}/${tomcat}/lib"
+  $tomcatLib = "${tomcat::home}/${tomcat}/lib"
   $jarfile = "${tomcatLib}/${jarname}.jar"
 
   if $jar {

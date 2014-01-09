@@ -34,7 +34,7 @@ define tomcat::instance(
 ) {
   require tomcat
 
-  $dir            = "${tomcat::params::home}/${name}"
+  $dir            = "${tomcat::home}/${name}"
   $service_name   = "tomcat7-${name}"
 
   # On debian, ports below and including 1024 are privileged
@@ -42,7 +42,7 @@ define tomcat::instance(
   if $http_port and $http_port <= 1024 {
     $authbind = true
     authbind::byport { $http_port: 
-      uid     => $tomcat::params::uid,
+      uid     => $tomcat::uid,
       before  => Service[$service_name]
     }
   }
@@ -51,8 +51,8 @@ define tomcat::instance(
   # This uses the tomcat-user package scripts to create the instance
   exec { "create instance at $dir":
     command => "tomcat7-instance-create $dir",
-    user    => $tomcat::params::user,
-    group   => $tomcat::params::group,
+    user    => $tomcat::user,
+    group   => $tomcat::group,
     creates => $dir,
     path    => "/usr/bin:/usr/sbin:/bin",
     notify  => Service[$service_name],
@@ -62,8 +62,8 @@ define tomcat::instance(
   # and use a template to specify the ports & appBase
   file {"${dir}/conf/server.xml":
     ensure  => file,
-    owner   => $tomcat::params::user,
-    group   => $tomcat::params::group,
+    owner   => $tomcat::user,
+    group   => $tomcat::group,
     mode    => 0644,
     content => template("tomcat/server.xml.erb"),
     require => Exec["create instance at $dir"],
@@ -73,8 +73,8 @@ define tomcat::instance(
   # Ensure that there is a place for external libs to be provided to
   file {"${dir}/lib":
     ensure  => directory,
-    owner   => $tomcat::params::user,
-    group   => $tomcat::params::group,
+    owner   => $tomcat::user,
+    group   => $tomcat::group,
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
   }

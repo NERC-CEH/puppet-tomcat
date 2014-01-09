@@ -31,7 +31,7 @@ define tomcat::deployment(
   $artifact     = undef,
   $version      = undef
 ) {
-  $tomcatBase = "${tomcat::params::home}/${tomcat}"
+  $tomcatBase = "${tomcat::home}/${tomcat}"
   $webapp = "${tomcatBase}/webapps/${application}"
   $warfile = "${webapp}.war"
 
