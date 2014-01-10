@@ -7,9 +7,9 @@
 # Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
-  $uid      = 232
-  $user     = 'tomcat7'
-  $group    = 'tomcat7'
+  $uid      = undef,
+  $user     = 'tomcat7',
+  $group    = 'tomcat7',
   $home     = '/home/tomcat7'
 ) {
 
@@ -28,7 +28,7 @@ class tomcat (
     # Ensure the tomcat7 user is present and has a home
     user { $user :
         ensure      => present,
-        uid         => 232,
+        uid         => $uid,
         gid         => $group,
         home        => $home,
         managehome  => true,
