@@ -6,6 +6,7 @@
 #
 # [*http_port*] The $http_port to bind this tomcat instance to
 # [*ajp_port*] The $ajp_port to bind this tomcat instance to
+# [*jolokia_port*] The $jolokia_port which this tomcat instance can be monitored on
 # [*shutdown_port*] The $shutdown_port for this tomcat instance to listen to
 # [*service_enable*] Whether or not tomcat should have its $service_enable(d)
 # [*service_ensure*] The $service_ensure state
@@ -23,7 +24,8 @@
 define tomcat::instance(
   $http_port         = undef,
   $ajp_port          = undef,
-  $shutdown_port     = "8005",
+  $jolokia_port      = undef,
+  $shutdown_port     = '8005',
   $service_enable    = true,
   $service_ensure    = 'running',
   $system_properties = {},
@@ -44,6 +46,18 @@ define tomcat::instance(
     authbind::byport { $http_port: 
       uid     => $tomcat::uid,
       before  => Service[$service_name]
+    }
+  }
+
+  # Set up jolokia monitoring on the given port
+  if $jolokia_port {
+    tomcat::deployment { "jolokia_for_${name}" :
+      tomcat   => $name,
+      group    => 'org.jolokia',
+      artifact => 'jolokia',
+      version  => $jolokia_version,
+      webapps  => 'jmx4perl',
+      require  => Exec["create instance at $dir"],
     }
   }
 

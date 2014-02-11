@@ -147,4 +147,18 @@
       </Host>
     </Engine>
   </Service>
+
+<% if @jolokia_port -%>
+  <Service name="jmx4perl">
+    <Connector port="<%= @jolokia_port %>" maxHttpHeaderSize="8192"
+               maxThreads="5" minSpareThreads="1" maxSpareThreads="3"
+               enableLookups="true" acceptCount="20"
+               connectionTimeout="3000" disableUploadTimeout="true" />    
+    <Engine name="Jmx4Perl" defaultHost="localhost">
+      <Host name="localhost" appBase="jmx4perl"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false"/>
+    </Engine>
+  </Service>
+<% end -%>
 </Server>
