@@ -7,10 +7,11 @@
 # Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
-  $uid      = undef,
-  $user     = 'tomcat7',
-  $group    = 'tomcat7',
-  $home     = '/home/tomcat7'
+  $uid              = undef,
+  $user             = 'tomcat7',
+  $group            = 'tomcat7',
+  $home             = '/home/tomcat7',
+  $jolokia_version  = '1.1.5'
 ) {
 
     # Require these base packages are installed
