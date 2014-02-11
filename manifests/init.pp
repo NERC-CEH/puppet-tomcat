@@ -7,10 +7,12 @@
 # Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
+  $jolokia_nexus    = undef,
   $uid              = undef,
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
+  $jolokia_repo     = 'public',
   $jolokia_version  = '1.1.5'
 ) {
 

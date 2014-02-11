@@ -25,6 +25,8 @@ define tomcat::instance(
   $http_port         = undef,
   $ajp_port          = undef,
   $jolokia_port      = undef,
+  $jolokia_nexus     = $tomcat::jolokia_nexus,
+  $jolokia_repo      = $tomcat::jolokia_repo,
   $jolokia_version   = $tomcat::jolokia_version,
   $shutdown_port     = '8005',
   $service_enable    = true,
