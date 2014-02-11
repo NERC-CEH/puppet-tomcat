@@ -29,10 +29,11 @@ define tomcat::deployment(
   $repo         = undef,
   $group        = undef,
   $artifact     = undef,
-  $version      = undef
+  $version      = undef,
+  $webapps      = 'webapps'
 ) {
   $tomcatBase = "${tomcat::home}/${tomcat}"
-  $webapp = "${tomcatBase}/webapps/${application}"
+  $webapp = "${tomcatBase}/${webapps}/${application}"
   $warfile = "${webapp}.war"
 
   if $war {
