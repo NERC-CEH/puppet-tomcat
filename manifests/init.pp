@@ -7,13 +7,13 @@
 # Christopher Johnson - cjohn@ceh.ac.uk
 #
 class tomcat (
-  $jolokia_nexus    = undef,
   $uid              = undef,
+  $jolokia_nexus    = undef,
+  $jolokia_repo     = undef,
+  $jolokia_version  = '1.1.1'
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
-  $jolokia_repo     = 'public',
-  $jolokia_version  = '1.1.5'
 ) {
 
     # Require these base packages are installed

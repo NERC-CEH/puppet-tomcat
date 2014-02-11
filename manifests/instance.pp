@@ -57,8 +57,10 @@ define tomcat::instance(
     tomcat::deployment { "jolokia_for_${name}" :
       tomcat   => $name,
       group    => 'org.jolokia',
-      artifact => 'jolokia',
+      artifact => 'jolokia-war',
       version  => $jolokia_version,
+      nexus    => $jolokia_nexus,
+      repo     => $jolokia_repo,
       webapps  => 'jmx4perl',
       require  => Exec["create instance at $dir"],
     }
