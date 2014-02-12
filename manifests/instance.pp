@@ -58,7 +58,7 @@ define tomcat::instance(
   if $jolokia_port {
     tomcat::instance::app_base { 'jmx4perl for ${name}' :
       tomcat => $name,
-      base   => $'jmx4perl',
+      base   => $jmx4perl,
     }
 
     tomcat::deployment { "jolokia_for_${name}" :

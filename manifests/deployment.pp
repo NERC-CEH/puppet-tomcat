@@ -32,7 +32,7 @@ define tomcat::deployment(
   $version      = undef,
   $app_base     = 'webapps'
 ) {
-  if ! defined(Tomcat:Instance[$tomcat]) {
+  if ! defined(Tomcat::Instance[$tomcat]) {
     fail('You must define a tomcat instance which we can deploy an application to')
   }
 
@@ -43,7 +43,7 @@ define tomcat::deployment(
   if $war {
     #Just load the war file from the specified location
     file { $warfile:
-      source  => $war
+      source  => $war,
     }
   }
   else {
