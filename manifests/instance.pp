@@ -7,7 +7,7 @@
 # [*http_port*] The $http_port to bind this tomcat instance to
 # [*ajp_port*] The $ajp_port to bind this tomcat instance to
 # [*jolokia_port*] The $jolokia_port which this tomcat instance can be monitored on
-# [*shutdown_port*] The $shutdown_port for this tomcat instance to listen to
+# [*shutdown_port*] The $shutdown_port for this tomcat instance to listen to, -1 is don't listen
 # [*service_enable*] Whether or not tomcat should have its $service_enable(d)
 # [*service_ensure*] The $service_ensure state
 # [*system_properties*] Defines a hash of system properties (-D) to be sent to java
@@ -28,7 +28,7 @@ define tomcat::instance(
   $jolokia_nexus     = $tomcat::jolokia_nexus,
   $jolokia_repo      = $tomcat::jolokia_repo,
   $jolokia_version   = $tomcat::jolokia_version,
-  $shutdown_port     = '8005',
+  $shutdown_port     = '-1',
   $service_enable    = true,
   $service_ensure    = 'running',
   $system_properties = {},
