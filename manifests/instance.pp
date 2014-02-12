@@ -56,14 +56,19 @@ define tomcat::instance(
 
   # Set up jolokia monitoring on the given port
   if $jolokia_port {
+    tomcat::instance::app_base { 'jmx4perl for ${name}' :
+      tomcat => $name,
+      base   => $'jmx4perl',
+    }
+
     tomcat::deployment { "jolokia_for_${name}" :
       tomcat   => $name,
+      app_base => 'jmx4perl',
       group    => 'org.jolokia',
       artifact => 'jolokia-war',
       version  => $jolokia_version,
       nexus    => $jolokia_nexus,
       repo     => $jolokia_repo,
-      webapps  => 'jmx4perl',
     }
   }
 
@@ -89,6 +94,12 @@ define tomcat::instance(
     content => template("tomcat/server.xml.erb"),
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
+  }
+
+  # Define the webapps (default app base) to deploy applications to
+  tomcat::instance::app_base { 'webapps for $name' :
+    tomcat => $name,
+    base   => 'webapps',
   }
 
   # Ensure that there is a place for external libs to be provided to

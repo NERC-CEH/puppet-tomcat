@@ -30,10 +30,14 @@ define tomcat::deployment(
   $group        = undef,
   $artifact     = undef,
   $version      = undef,
-  $webapps      = 'webapps'
+  $app_base     = 'webapps'
 ) {
+  if ! defined(Tomcat:Instance[$tomcat]) {
+    fail('You must define a tomcat instance which we can deploy an application to')
+  }
+
   $tomcatBase = "${tomcat::home}/${tomcat}"
-  $webapp = "${tomcatBase}/${webapps}/${application}"
+  $webapp = "${tomcatBase}/${app_base}/${application}"
   $warfile = "${webapp}.war"
 
   if $war {
