@@ -37,7 +37,6 @@ define tomcat::instance(
                         'X:MaxPermSize=128M', 
                         'X:PermSize=64M']
 ) {
-
   if ! defined(Class['tomcat']) {
     fail('You must include the tomcat base class before using any tomcat defined resources')
   }
@@ -65,7 +64,6 @@ define tomcat::instance(
       nexus    => $jolokia_nexus,
       repo     => $jolokia_repo,
       webapps  => 'jmx4perl',
-      require  => Exec["create instance at $dir"],
     }
   }
 
@@ -77,8 +75,8 @@ define tomcat::instance(
     group   => $tomcat::group,
     creates => $dir,
     path    => "/usr/bin:/usr/sbin:/bin",
-    require => Package['tomcat7'],
     notify  => Service[$service_name],
+    require => Class['tomcat'],
   }
 
   # Override the default server.xml file
