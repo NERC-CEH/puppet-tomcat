@@ -77,6 +77,7 @@ define tomcat::instance(
     group   => $tomcat::group,
     creates => $dir,
     path    => "/usr/bin:/usr/sbin:/bin",
+    require => Package['tomcat7'],
     notify  => Service[$service_name],
   }
 
