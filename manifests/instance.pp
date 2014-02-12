@@ -56,7 +56,7 @@ define tomcat::instance(
 
   # Set up jolokia monitoring on the given port
   if $jolokia_port {
-    tomcat::instance::app_base { 'jmx4perl for ${name}' :
+    tomcat::instance::app_base { "jmx4perl for ${name}" :
       tomcat => $name,
       base   => $jmx4perl,
     }
@@ -97,7 +97,7 @@ define tomcat::instance(
   }
 
   # Define the webapps (default app base) to deploy applications to
-  tomcat::instance::app_base { 'webapps for $name' :
+  tomcat::instance::app_base { "webapps for ${name}" :
     tomcat => $name,
     base   => 'webapps',
   }
