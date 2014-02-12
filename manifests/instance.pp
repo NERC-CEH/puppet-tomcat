@@ -37,7 +37,10 @@ define tomcat::instance(
                         'X:MaxPermSize=128M', 
                         'X:PermSize=64M']
 ) {
-  require tomcat
+
+  if ! defined(Class['tomcat']) {
+    fail('You must include the tomcat base class before using any tomcat defined resources')
+  }
 
   $dir            = "${tomcat::home}/${name}"
   $service_name   = "tomcat7-${name}"
