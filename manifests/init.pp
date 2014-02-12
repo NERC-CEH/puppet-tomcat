@@ -10,7 +10,7 @@ class tomcat (
   $uid              = undef,
   $jolokia_nexus    = undef,
   $jolokia_repo     = undef,
-  $jolokia_version  = '1.1.1'
+  $jolokia_version  = '1.1.1',
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
