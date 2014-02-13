@@ -13,6 +13,7 @@
 # [*group*] The $group of the war artifact
 # [*artifact*] The $artifact name
 # [*version*] The $version of the artifact
+# [*app_base*] The $app_base which this deployment should reside in
 #
 # === Requires
 # - The nexus module if doing nexus deployments

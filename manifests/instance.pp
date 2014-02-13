@@ -7,6 +7,9 @@
 # [*http_port*] The $http_port to bind this tomcat instance to
 # [*ajp_port*] The $ajp_port to bind this tomcat instance to
 # [*jolokia_port*] The $jolokia_port which this tomcat instance can be monitored on
+# [*jolokia_nexus*] The nexus server to obtain jolokia from, defaults to tomcat::jolokia_nexus
+# [*jolokia_repo*] The nexus repository to obtain jolokia from, defaults to tomcat::jolokia_repo
+# [*jolokia_version*] The version of jolokia to deploy, defaults to tomcat::jolokia_version
 # [*shutdown_port*] The $shutdown_port for this tomcat instance to listen to, -1 is don't listen
 # [*service_enable*] Whether or not tomcat should have its $service_enable(d)
 # [*service_ensure*] The $service_ensure state
