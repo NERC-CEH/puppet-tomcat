@@ -34,7 +34,7 @@ define tomcat::instance(
   $shutdown_port     = '-1',
   $service_enable    = true,
   $service_ensure    = 'running',
-  $system_properties = {},
+  $system_properties = {'java.awt.headless' => true},
   $non_standard_opts = ['mx1024M', 
                         'ms256M', 
                         'X:MaxPermSize=128M', 

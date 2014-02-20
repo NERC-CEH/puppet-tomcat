@@ -99,17 +99,6 @@ CATALINA_BASE=<%=@dir%>
 # Use the Java security manager? (yes/no)
 TOMCAT7_SECURITY=no
 
-# Default Java options
-# Set java.awt.headless=true if JAVA_OPTS is not set so the
-# Xalan XSL transformer can work without X11 display on JDK 1.4+
-# It also looks like the default heap size of 64M is not enough for most cases
-# so the maximum heap size is set to 128M
-if [ -z "$JAVA_OPTS" ]; then
-        JAVA_OPTS="-Djava.awt.headless=true -Xmx128M"
-fi
-
-# End of variables that can be overwritten in $DEFAULT
-
 # overwrite settings from default file
 if [ -f "$DEFAULT" ]; then
         . "$DEFAULT"
