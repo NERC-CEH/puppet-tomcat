@@ -24,16 +24,17 @@ class tomcat (
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
+  $version          = installed
 ) {
   # Require these base packages are installed
   package { 'tomcat7':
-    ensure => installed,
+    ensure => $version,
   }
 
   # NOTE: tomcat-user package is Ubuntu specific!!
   # It lets us quickly install Tomcat to any directory (see instance.pp)
   package { 'tomcat7-user':
-    ensure  => installed,
+    ensure  => $version,
     require => Package['tomcat7'],
   }
 
