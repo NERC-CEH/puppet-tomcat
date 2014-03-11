@@ -1,0 +1,20 @@
+# This defaults file is managed by the tomcat puppet module.
+# Editing is futile !
+
+<%# Loop over the non standard options %>
+<%- @non_standard_opts.each do |property| -%>
+JAVA_OPTS="${JAVA_OPTS} -X<%=property%>"
+<%- end -%>
+
+<%#Loop over the properties %>
+<%- @system_properties.each_pair do |key, value| -%>
+JAVA_OPTS="${JAVA_OPTS} -D<%=key%>=<%=value%>"
+<%- end -%>
+
+# If you run Tomcat on port numbers that are all higher than 1023, then you
+# do not need authbind.  It is used for binding Tomcat to lower port numbers.
+# NOTE: authbind works only with IPv4.  Do not enable it when using IPv6.
+# (yes/no, default: no)
+<% if @authbind %>
+AUTHBIND=yes
+<% end %>
