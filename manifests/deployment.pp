@@ -60,7 +60,7 @@ define tomcat::deployment(
   
   exec { "rm -Rf $webapp":
     subscribe   => File[$warfile],
-    notify      => Service["tomcat7-${tomcat}"],
+    notify      => Service["${tomcat::package}-${tomcat}"],
     refreshonly => true,
     path        => "/usr/bin:/usr/sbin:/bin",
   }

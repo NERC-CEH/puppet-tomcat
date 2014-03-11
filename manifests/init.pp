@@ -25,7 +25,9 @@ class tomcat (
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
-  $version          = installed
+  $version          = installed,
+  $manage_user      = true,
+  $manage_group     = true
 ) {
   # Require these base packages are installed
   package { $package :
@@ -39,13 +41,22 @@ class tomcat (
     require => Package[$package],
   }
 
-  # Ensure the tomcat user is present and has a home
-  user { $user :
-    ensure      => present,
-    uid         => $uid,
-    gid         => $group,
-    home        => $home,
-    managehome  => true,
+  if $manage_user {
+    # Ensure the tomcat user is present and has a home
+    user { $user :
+      ensure      => present,
+      uid         => $uid,
+      gid         => $group,
+      home        => $home,
+      managehome  => true,
+    }
+  }
+
+  if $manage_group {
+    # Ensure the tomcat group is present
+    group { $group :
+      ensure => present,
+    }
   }
 
   # Ensure tomcat owns its home, without this puppet seems to create the
