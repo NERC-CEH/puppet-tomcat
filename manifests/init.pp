@@ -21,24 +21,25 @@ class tomcat (
   $jolokia_nexus    = undef,
   $jolokia_repo     = undef,
   $jolokia_version  = '1.1.5',
+  $package          = 'tomcat7',
   $user             = 'tomcat7',
   $group            = 'tomcat7',
   $home             = '/home/tomcat7',
   $version          = installed
 ) {
   # Require these base packages are installed
-  package { 'tomcat7':
+  package { $package :
     ensure => $version,
   }
 
   # NOTE: tomcat-user package is Ubuntu specific!!
   # It lets us quickly install Tomcat to any directory (see instance.pp)
-  package { 'tomcat7-user':
+  package { "${package}-user":
     ensure  => $version,
-    require => Package['tomcat7'],
+    require => Package[$package],
   }
 
-  # Ensure the tomcat7 user is present and has a home
+  # Ensure the tomcat user is present and has a home
   user { $user :
     ensure      => present,
     uid         => $uid,
@@ -47,8 +48,8 @@ class tomcat (
     managehome  => true,
   }
 
-  # Ensure tomcat7 owns its home, without this puppet seems to create the
-  # tomcat7 home owned by root
+  # Ensure tomcat owns its home, without this puppet seems to create the
+  # tomcat home owned by root
   file { $home :
     ensure  => directory,
     owner   => $user,
@@ -56,9 +57,9 @@ class tomcat (
   }
 
   # install the package, but disable the default Tomcat service
-  service { 'tomcat7':
+  service { $package :
     enable    => false,
-    require   => Package['tomcat7'],
+    require   => Package[$package],
     ensure    => stopped
   }
 }
