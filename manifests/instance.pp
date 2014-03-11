@@ -1,6 +1,6 @@
 # == Define: tomcat::instance
 #
-# A class to create instances of tomcat to run under the tomcat7 user. 
+# A class to create instances of tomcat to run under the tomcat user. 
 #
 # === Parameters
 #
@@ -45,7 +45,7 @@ define tomcat::instance(
   }
 
   $dir            = "${tomcat::home}/${name}"
-  $service_name   = "tomcat7-${name}"
+  $service_name   = "${tomcat::package}-${name}"
 
   # On debian, ports below and including 1024 are privileged
   # To use these, we must authbind
@@ -78,7 +78,7 @@ define tomcat::instance(
   # Make sure Tomcat instance was created
   # This uses the tomcat-user package scripts to create the instance
   exec { "create instance at $dir":
-    command => "tomcat7-instance-create $dir",
+    command => "${tomcat::package}-instance-create $dir",
     user    => $tomcat::user,
     group   => $tomcat::group,
     creates => $dir,
@@ -119,7 +119,7 @@ define tomcat::instance(
     ensure  => file,
     owner   => root,
     group   => root,
-    content => template("tomcat/default-tomcat7-instance.erb"),
+    content => template("tomcat/default-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
   }  
@@ -130,14 +130,14 @@ define tomcat::instance(
     owner   => root,
     group   => root,
     mode    => 755,
-    content => template("tomcat/init-tomcat7-instance.erb"),
+    content => template("tomcat/init-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
   }
 
   file { "${dir}/conf/policy.d" :
     ensure  => link,
-    target  => '/etc/tomcat7/policy.d',
+    target  => "/etc/${tomcat::package}/policy.d",
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
   }
