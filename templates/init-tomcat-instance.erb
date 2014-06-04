@@ -60,11 +60,25 @@ TOMCAT_GROUP=<%=scope['tomcat::group']%>
 # this function sets the variable OPENJDKS
 find_openjdks()
 {
+        for jvmdir in /usr/lib/jvm/java-8-oracle
+        do
+                if [ -d "${jvmdir}" ]
+                then
+                        OPENJDKS=$jvmdir
+                fi
+        done
+        for jvmdir in /usr/lib/jvm/java-7-oracle
+        do
+                if [ -d "${jvmdir}" ]
+                then
+                        OPENJDKS="${OPENJDKS} ${jvmdir}"
+                fi
+        done
         for jvmdir in /usr/lib/jvm/java-7-openjdk-*
         do
                 if [ -d "${jvmdir}" -a "${jvmdir}" != "/usr/lib/jvm/java-7-openjdk-common" ]
                 then
-                        OPENJDKS=$jvmdir
+                        OPENJDKS="${OPENJDKS} ${jvmdir}"
                 fi
         done
         for jvmdir in /usr/lib/jvm/java-6-openjdk-*
