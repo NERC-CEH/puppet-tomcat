@@ -27,6 +27,7 @@
 define tomcat::instance(
   $http_port         = undef,
   $ajp_port          = undef,
+  $java_home         = undef,
   $jolokia_port      = undef,
   $jolokia_nexus     = $tomcat::jolokia_nexus,
   $jolokia_repo      = $tomcat::jolokia_repo,

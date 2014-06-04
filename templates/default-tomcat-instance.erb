@@ -6,9 +6,14 @@
 JAVA_OPTS="${JAVA_OPTS} -X<%=property%>"
 <%- end -%>
 
-<%#Loop over the properties %>
+<%# Loop over the properties %>
 <%- @system_properties.each_pair do |key, value| -%>
 JAVA_OPTS="${JAVA_OPTS} -D<%=key%>=<%=value%>"
+<%- end -%>
+
+<%# Specify a Particular java home to use %>
+<%- if @java_home -%>
+JAVA_HOME=<%=java_home%>
 <%- end -%>
 
 # If you run Tomcat on port numbers that are all higher than 1023, then you
