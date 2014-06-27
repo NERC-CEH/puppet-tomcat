@@ -39,6 +39,7 @@ define tomcat::instance::provide (
   }
   else {
     #Obtain the jar file from nexus
+    include nexus
     nexus::artifact { $jarfile :
       nexus     => $nexus,
       repo      => $repo,

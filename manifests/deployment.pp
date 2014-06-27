@@ -49,6 +49,7 @@ define tomcat::deployment(
   }
   else {
     #Obtain the war file from nexus
+    include nexus
     nexus::artifact { $warfile :
       nexus    => $nexus,
       repo     => $repo,
