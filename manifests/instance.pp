@@ -6,6 +6,13 @@
 #
 # [*http_port*] The $http_port to bind this tomcat instance to
 # [*ajp_port*] The $ajp_port to bind this tomcat instance to
+# [*enableUserDatabaseRealm*] Boolean to enable default file based userdatabase
+# [*enableJaasRealm*] Boolean to enable a jaas realm
+# [*jaasAppName*] jaas Realm application name
+# [*jaasUserClassName*] jaas Realm class representing user principals
+# [*jaasRoleClassName*] jaas Realm class representing role principals
+# [*jaasLoginModule] Class name of the custom jaas login module to use
+# [*jaasConfigMap] Hash of key/value pairs for params to pass to login module
 # [*jolokia_port*] The $jolokia_port which this tomcat instance can be monitored on
 # [*jolokia_nexus*] The nexus server to obtain jolokia from, defaults to tomcat::jolokia_nexus
 # [*jolokia_repo*] The nexus repository to obtain jolokia from, defaults to tomcat::jolokia_repo
@@ -23,26 +30,46 @@
 # === Authors
 #
 # Christopher Johnson - cjohn@ceh.ac.uk
+# Mike Wilson - mw@ceh.ac.uk
 #
 define tomcat::instance(
-  $http_port         = undef,
-  $ajp_port          = undef,
-  $java_home         = undef,
-  $jolokia_port      = undef,
-  $jolokia_nexus     = $tomcat::jolokia_nexus,
-  $jolokia_repo      = $tomcat::jolokia_repo,
-  $jolokia_version   = $tomcat::jolokia_version,
-  $shutdown_port     = '-1',
-  $service_enable    = true,
-  $service_ensure    = 'running',
-  $system_properties = {'java.awt.headless' => true},
-  $non_standard_opts = ['mx1024M', 
-                        'ms256M', 
-                        'X:MaxPermSize=128M', 
-                        'X:PermSize=64M']
+  $http_port               = undef,
+  $ajp_port                = undef,
+  $enableUserDatabaseRealm = true,
+  $enableJaasRealm          = false,
+  $jaasAppName             = undef,
+  $jaasUserClassName       = undef,
+  $jaasRoleClassName       = undef,
+  $jaasLoginModule         = undef,
+  $jaasConfigMap           = undef,
+  $java_home               = undef,
+  $jolokia_port            = undef,
+  $jolokia_nexus           = $tomcat::jolokia_nexus,
+  $jolokia_repo            = $tomcat::jolokia_repo,
+  $jolokia_version         = $tomcat::jolokia_version,
+  $shutdown_port           = '-1',
+  $service_enable          = true,
+  $service_ensure          = 'running',
+  $system_properties       = {'java.awt.headless' => true},
+  $non_standard_opts       = ['mx1024M', 
+                              'ms256M', 
+                              'X:MaxPermSize=128M', 
+                              'X:PermSize=64M']
 ) {
   if ! defined(Class['tomcat']) {
     fail('You must include the tomcat base class before using any tomcat defined resources')
+  }
+
+  validate_bool($enableJaasRealm)
+  validate_bool($enableUserDatabaseRealm)
+
+  # If jaasRealm is enabled, check all params as correct type
+  if $enableJaasRealm {
+    validate_string($jaasAppName)
+    validate_string($jaasUserClassName)
+    validate_string($jaasRoleClassName)
+    validate_string($jaasLoginModule)
+    validate_hash($jaasConfigMap)
   }
 
   $dir            = "${tomcat::home}/${name}"
@@ -100,6 +127,18 @@ define tomcat::instance(
     notify  => Service[$service_name],
   }
 
+  if $enableJaasRealm {
+    file {"${dir}/conf/jaas.config":
+      ensure  => file,
+      owner   => $tomcat::user,
+      group   => $tomcat::group,
+      mode    => 0644,
+      content => template("tomcat/jaas.config.erb"),
+      require => Exec["create instance at $dir"],
+      notify  => Service[$service_name],
+    }
+  }
+
   # Define the webapps (default app base) to deploy applications to
   tomcat::instance::app_base { "webapps for ${name}" :
     tomcat => $name,
@@ -148,3 +187,4 @@ define tomcat::instance(
     enable => $service_enable,  
   }
 }
+
