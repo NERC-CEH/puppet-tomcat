@@ -1,0 +1,23 @@
+{
+  "name": "puppet-tomcat",
+  "version": "0.5.0",
+  "summary": "Create Tomcat instances and deploy applications",
+  "author": "CEH App Dev",
+  "project_page": "https://github.com/NERC-CEH/puppet-tomcat",
+  "source": "git@github.com:NERC-CEH/puppet-tomcat.git",
+  "license": "GPL-3.0",
+  "operatingsystem_support": [
+  	{
+  		"operatingsystem": "Ubuntu",
+  		"operatingsystemrelease": ["12.04", "14.04"]
+  	}
+  ],
+  "requirements": [
+    {"name": "puppet", "version_requirement": "3.x"}
+  ],
+  "dependencies": [
+  	{"name": "puppet/authbind", "version_requirement": "0.1"},
+  	{"name": "puppet/nexus", "version_requirement": "0.1"},
+  	{"name": "puppetlabs/stdlib", "version_requirement": ">= 4.3.2"}
+  ]
+}
