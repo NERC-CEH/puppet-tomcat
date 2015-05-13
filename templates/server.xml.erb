@@ -44,14 +44,14 @@
                redirectPort="8443"<%-
                if @proxy_port -%> proxyPort="<%= @proxy_port %>"<%- end
                if @secure -%> secure="<%= @secure %>"<%- end
-               if @scheme -%> scheme="<%= @scheme %>"<%- end -%>/>
+               if @scheme -%> scheme="<%= @scheme %>"<%- end -%> />
 <% end -%>
 
 <% if @ajp_port -%>
     <Connector port="<%= @ajp_port %>" protocol="AJP/1.3" redirectPort="8443"<%-
                if @proxy_port -%> proxyPort="<%= @proxy_port %>"<%- end
                if @secure -%> secure="<%= @secure %>"<%- end
-               if @scheme -%> scheme="<%= @scheme %>"<%- end -%>/>
+               if @scheme -%> scheme="<%= @scheme %>"<%- end -%> />
 <% end -%>
 
     <Engine name="Catalina" defaultHost="localhost">
