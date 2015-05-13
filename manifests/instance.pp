@@ -1,11 +1,14 @@
 # == Define: tomcat::instance
 #
-# A class to create instances of tomcat to run under the tomcat user. 
+# A class to create instances of tomcat to run under the tomcat user.
 #
 # === Parameters
 #
 # [*http_port*] The $http_port to bind this tomcat instance to
 # [*ajp_port*] The $ajp_port to bind this tomcat instance to
+# [*proxy_port*] The $proxy_port for this tomcats connection. (Returned in java request.getServerPort() )
+# [*secure*] the value which java returns when request.isSecure() is called
+# [*scheme*] the value which java returns when request.getScheme() is called
 # [*enableUserDatabaseRealm*] Boolean to enable default file based userdatabase
 # [*enableJaasRealm*] Boolean to enable a jaas realm
 # [*jaasAppName*] jaas Realm application name
@@ -35,8 +38,11 @@
 define tomcat::instance(
   $http_port               = undef,
   $ajp_port                = undef,
+  $proxy_port              = undef,
+  $secure                  = undef,
+  $scheme                  = undef,
   $enableUserDatabaseRealm = true,
-  $enableJaasRealm          = false,
+  $enableJaasRealm         = false,
   $jaasAppName             = undef,
   $jaasUserClassName       = undef,
   $jaasRoleClassName       = undef,
@@ -51,9 +57,9 @@ define tomcat::instance(
   $service_enable          = true,
   $service_ensure          = 'running',
   $system_properties       = {'java.awt.headless' => true},
-  $non_standard_opts       = ['mx1024M', 
-                              'ms256M', 
-                              'X:MaxPermSize=128M', 
+  $non_standard_opts       = ['mx1024M',
+                              'ms256M',
+                              'X:MaxPermSize=128M',
                               'X:PermSize=64M']
 ) {
   if ! defined(Class['tomcat']) {
@@ -79,7 +85,7 @@ define tomcat::instance(
   # To use these, we must authbind
   if $http_port and $http_port <= 1024 {
     $authbind = true
-    authbind::byport { $http_port: 
+    authbind::byport { $http_port:
       uid     => $tomcat::uid,
       before  => Service[$service_name]
     }
@@ -162,7 +168,7 @@ define tomcat::instance(
     content => template("tomcat/default-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
-  }  
+  }
 
   # set up an init script for this instance
   file { "/etc/init.d/${service_name}" :
@@ -184,7 +190,7 @@ define tomcat::instance(
 
   service { $service_name :
     ensure => $service_ensure,
-    enable => $service_enable,  
+    enable => $service_enable,
   }
 }
 
