@@ -44,6 +44,7 @@ define tomcat::deployment(
   if $war {
     #Just load the war file from the specified location
     file { $warfile:
+      backup  => false,
       source  => $war,
     }
   }
@@ -58,7 +59,7 @@ define tomcat::deployment(
       version  => $version,
     }
   }
-  
+
   exec { "rm -Rf $webapp":
     subscribe   => File[$warfile],
     notify      => Service["${tomcat::package}-${tomcat}"],

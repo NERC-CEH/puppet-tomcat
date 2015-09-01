@@ -1,6 +1,6 @@
 # == Define: tomcat::instance::provide
 #
-# Provide a given tomcat instance with an external jar file or one 
+# Provide a given tomcat instance with an external jar file or one
 # from nexus
 #
 # === Parameters
@@ -18,7 +18,7 @@
 #
 # - Christopher Johnson cjohn@ceh.ac.uk
 #
-define tomcat::instance::provide (  
+define tomcat::instance::provide (
   $tomcat,
   $jar          = undef,
   $nexus        = undef,
@@ -34,7 +34,8 @@ define tomcat::instance::provide (
   if $jar {
     #Just load the jar file from the specified location
     file { $jarfile:
-      source  => $jar
+      backup  => false,
+      source  => $jar,
     }
   }
   else {
