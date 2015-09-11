@@ -51,7 +51,7 @@ You can also provide a tomcat base with additional jar files
 
 ## Limitations
 
-This module has been tested on ubuntu 12.04 lts
+This module has been tested on Ubuntu 12.04 lts and Ubuntu 14.04 lts
 
 ## Contributors
 

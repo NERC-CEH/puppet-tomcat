@@ -1,0 +1,21 @@
+{
+  "name": "ceh-tomcat",
+  "version": "1.0.0",
+  "author": "Centre for Ecology & Hydrology",
+  "license": "GPL-2.0",
+  "summary": "This is the tomcat module, it allows you to create instances of tomcat and deploy tomcat applications",
+  "source": "https://github.com/NERC-CEH/puppet-tomcat",
+  "project_page": "https://forge.puppetlabs.com/ceh/tomcat",
+  "issues_url": "https://github.com/NERC-CEH/puppet-tomcat/issues",
+  "tags": ["tomcat", "oss sonatype", "maven"],
+  "operatingsystem_support": [
+    {
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": [ "12.04", "14.04" ]
+    }
+   ],
+  "dependencies": [
+    { "name": "ceh/authbind", "version_requirement": ">=1.0.0 <2.0.0" },
+    { "name": "ceh/nexus", "version_requirement": ">=1.0.0 <2.0.0" }
+  ]
+}
