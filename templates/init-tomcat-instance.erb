@@ -148,32 +148,33 @@ if [ -z "${JSSE_HOME}" -a -r "${JAVA_HOME}/jre/lib/jsse.jar" ]; then
     JSSE_HOME="${JAVA_HOME}/jre/"
 fi
 
+
+# Escape any double quotes in the value of JAVA_OPTS
+JAVA_OPTS="$(echo $JAVA_OPTS | sed 's/\"/\\\"/g')"
+
+AUTHBIND_COMMAND=""
+if [ "$AUTHBIND" = "yes" -a "$1" = "start" ]; then
+        JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
+        AUTHBIND_COMMAND="/usr/bin/authbind --deep /bin/bash -c "
+fi
+
+# Define the command to run Tomcat's catalina.sh as a daemon
+# set -a tells sh to export assigned variables to spawned shells.
+TOMCAT_SH="set -a; JAVA_HOME=\"$JAVA_HOME\"; source \"$DEFAULT\"; \
+        CATALINA_HOME=\"$CATALINA_HOME\"; \
+        CATALINA_BASE=\"$CATALINA_BASE\"; \
+        JAVA_OPTS=\"$JAVA_OPTS\"; \
+        CATALINA_PID=\"$CATALINA_PID\"; \
+        CATALINA_TMPDIR=\"$CATALINA_TMPDIR\"; \
+        LANG=\"$LANG\"; JSSE_HOME=\"$JSSE_HOME\"; \
+        cd \"$CATALINA_BASE\"; \
+        \"$CATALINA_SH\" $@"
+
+if [ "$AUTHBIND" = "yes" -a "$1" = "start" ]; then
+        TOMCAT_SH="'$TOMCAT_SH'"
+fi
+
 catalina_sh() {
-        # Escape any double quotes in the value of JAVA_OPTS
-        JAVA_OPTS="$(echo $JAVA_OPTS | sed 's/\"/\\\"/g')"
-
-        AUTHBIND_COMMAND=""
-        if [ "$AUTHBIND" = "yes" -a "$1" = "start" ]; then
-                JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
-                AUTHBIND_COMMAND="/usr/bin/authbind --deep /bin/bash -c "
-        fi
-
-        # Define the command to run Tomcat's catalina.sh as a daemon
-        # set -a tells sh to export assigned variables to spawned shells.
-        TOMCAT_SH="set -a; JAVA_HOME=\"$JAVA_HOME\"; source \"$DEFAULT\"; \
-                CATALINA_HOME=\"$CATALINA_HOME\"; \
-                CATALINA_BASE=\"$CATALINA_BASE\"; \
-                JAVA_OPTS=\"$JAVA_OPTS\"; \
-                CATALINA_PID=\"$CATALINA_PID\"; \
-                CATALINA_TMPDIR=\"$CATALINA_TMPDIR\"; \
-                LANG=\"$LANG\"; JSSE_HOME=\"$JSSE_HOME\"; \
-                cd \"$CATALINA_BASE\"; \
-                \"$CATALINA_SH\" $@"
-
-        if [ "$AUTHBIND" = "yes" -a "$1" = "start" ]; then
-                TOMCAT_SH="'$TOMCAT_SH'"
-        fi
-
         # Run the catalina.sh script as a daemon
         set +e
         touch "$CATALINA_PID" "$CATALINA_BASE"/logs/catalina.out
@@ -285,6 +286,11 @@ case "$1" in
         fi
         $0 start
         ;;
+  run)
+        set +e
+        eval "$AUTHBIND_COMMAND $TOMCAT_SH"
+        set -e
+  ;;
   try-restart)
         if start-stop-daemon --test --start --pidfile "$CATALINA_PID" \
                 --user $TOMCAT_USER --exec "$JAVA_HOME/bin/java" \
@@ -293,7 +299,7 @@ case "$1" in
         fi
         ;;
   *)
-        log_success_msg "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"
+        log_success_msg "Usage: $0 {start|stop|restart|try-restart|force-reload|status|run}"
         exit 1
         ;;
 esac
