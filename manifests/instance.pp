@@ -175,7 +175,7 @@ define tomcat::instance(
     ensure  => file,
     owner   => root,
     group   => root,
-    mode    => "755",
+    mode    => "0755",
     content => template("tomcat/init-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
     notify  => Service[$service_name],
