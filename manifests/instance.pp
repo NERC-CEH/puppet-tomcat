@@ -9,6 +9,7 @@
 # [*proxy_port*] The $proxy_port for this tomcats connection. (Returned in java request.getServerPort() )
 # [*secure*] the value which java returns when request.isSecure() is called
 # [*scheme*] the value which java returns when request.getScheme() is called
+# [*packet_size*] the maximum ajp packetSize value. This should be the same as the Apache ProxyIOBufferSize
 # [*enableUserDatabaseRealm*] Boolean to enable default file based userdatabase
 # [*enableJaasRealm*] Boolean to enable a jaas realm
 # [*jaasAppName*] jaas Realm application name
@@ -41,6 +42,7 @@ define tomcat::instance(
   $proxy_port              = undef,
   $secure                  = undef,
   $scheme                  = undef,
+  $packet_size             = undef,
   $enableUserDatabaseRealm = true,
   $enableJaasRealm         = false,
   $jaasAppName             = undef,
