@@ -11,7 +11,7 @@
 # Modified for use with Vagrant by Hardy Pottinger <pottingerhj@missouri.edu>.
 #
 ### BEGIN INIT INFO
-# Provides:          <%= scope['tomcat::package']%>
+# Provides:          <%= scope['tomcat::package']%>-<%=@name%>
 # Required-Start:    $local_fs $remote_fs $network
 # Required-Stop:     $local_fs $remote_fs $network
 # Should-Start:      $named
@@ -74,6 +74,13 @@ find_openjdks()
                         OPENJDKS="${OPENJDKS} ${jvmdir}"
                 fi
         done
+        for jvmdir in /usr/lib/jvm/java-8-openjdk-*
+        do
+                if [ -d "${jvmdir}" -a "${jvmdir}" != "/usr/lib/jvm/java-8-openjdk-common" ]
+                then
+                        OPENJDKS="${OPENJDKS} ${jvmdir}"
+                fi
+        done     
         for jvmdir in /usr/lib/jvm/java-7-openjdk-*
         do
                 if [ -d "${jvmdir}" -a "${jvmdir}" != "/usr/lib/jvm/java-7-openjdk-common" ]
