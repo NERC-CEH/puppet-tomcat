@@ -183,6 +183,16 @@ define tomcat::instance(
     notify  => Service[$service_name],
   }
 
+  # set up a systemd service unit file
+  if ($::lsbmajdistrelease == '16.04') {
+    file { "/etc/systemd/system/${service_name}.service":
+      content => template("tomcat/tomcat-instance-service.erb"),
+      owner    => root,
+      group    => root,
+      mode     => '0755',
+    }
+  }
+
   file { "${dir}/conf/policy.d" :
     ensure  => link,
     target  => "/etc/${tomcat::package}/policy.d",

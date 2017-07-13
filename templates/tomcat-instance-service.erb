@@ -1,0 +1,19 @@
+[Unit]
+SourcePath=/etc/init.d/<%= scope['tomcat::package']%>-<%=@name%>
+Description=LSB: Start Tomcat Instance
+After=local-fs.target
+After=remote-fs.target
+After=network-online.target
+After=nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+Restart=no
+TimeoutSec=5min
+IgnoreSIGPIPE=no
+KillMode=process
+GuessMainPID=no
+RemainAfterExit=yes
+ExecStart=/etc/init.d/<%= scope['tomcat::package']%>-<%=@name%> start
+ExecStop=/etc/init.d/<%= scope['tomcat::package']%>-<%=@name%> stop
