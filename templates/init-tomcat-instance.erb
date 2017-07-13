@@ -160,7 +160,7 @@ fi
 
 # Define the command to run Tomcat's catalina.sh as a daemon
 # set -a tells sh to export assigned variables to spawned shells.
-TOMCAT_SH="set -a; JAVA_HOME=\"$JAVA_HOME\"; source \"$DEFAULT\"; \
+TOMCAT_SH="set -a; JAVA_HOME=\"$JAVA_HOME\"; . \"$DEFAULT\"; \
         CATALINA_HOME=\"$CATALINA_HOME\"; \
         CATALINA_BASE=\"$CATALINA_BASE\"; \
         JAVA_OPTS=\"$JAVA_OPTS\"; \
