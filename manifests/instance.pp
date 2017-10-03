@@ -89,7 +89,7 @@ define tomcat::instance(
     $authbind = true
     authbind::byport { "${http_port}" :
       uid     => $tomcat::uid,
-      before  => Service["${service_name}"]
+      before  => Service[$service_name]
     }
   }
 
@@ -119,7 +119,7 @@ define tomcat::instance(
     group   => $tomcat::group,
     creates => $dir,
     path    => "/usr/bin:/usr/sbin:/bin",
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
     require => Class['tomcat'],
   }
 
@@ -132,7 +132,7 @@ define tomcat::instance(
     mode    => '0644',
     content => template("tomcat/server.xml.erb"),
     require => Exec["create instance at $dir"],
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
   }
 
   if $enableJaasRealm {
@@ -143,7 +143,7 @@ define tomcat::instance(
       mode    => '0644',
       content => template("tomcat/jaas.config.erb"),
       require => Exec["create instance at $dir"],
-      notify  => Service["${service_name}"],
+      notify  => Service[$service_name],
     }
   }
 
@@ -159,7 +159,7 @@ define tomcat::instance(
     owner   => $tomcat::user,
     group   => $tomcat::group,
     require => Exec["create instance at $dir"],
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
   }
 
   # set up defaults file for this instance
@@ -169,7 +169,7 @@ define tomcat::instance(
     group   => root,
     content => template("tomcat/default-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
   }
 
   # set up an init script for this instance
@@ -180,7 +180,7 @@ define tomcat::instance(
     mode    => '0755',
     content => template("tomcat/init-tomcat-instance.erb"),
     require => Exec["create instance at $dir"],
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
   }
 
   # set up a systemd service unit file
@@ -197,10 +197,10 @@ define tomcat::instance(
     ensure  => link,
     target  => "/etc/${tomcat::package}/policy.d",
     require => Exec["create instance at $dir"],
-    notify  => Service["${service_name}"],
+    notify  => Service[$service_name],
   }
 
-  service { "${service_name}" :
+  service { $service_name :
     ensure => $service_ensure,
     enable => $service_enable,
   }
