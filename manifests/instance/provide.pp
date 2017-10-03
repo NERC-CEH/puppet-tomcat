@@ -33,15 +33,15 @@ define tomcat::instance::provide (
 
   if $jar {
     #Just load the jar file from the specified location
-    file { $jarfile:
+    file { "${jarfile}" :
       backup  => false,
       source  => $jar,
     }
   }
   else {
     #Obtain the jar file from nexus
-    include nexus
-    nexus::artifact { $jarfile :
+    include ::nexus
+    nexus::artifact { "${jarfile}" :
       nexus     => $nexus,
       repo      => $repo,
       group     => $group,
@@ -51,5 +51,5 @@ define tomcat::instance::provide (
     }
   }
 
-  File[$jarfile] ~> Service["${tomcat::package}-${tomcat}"]
+  File["${jarfile}"] ~> Service["${tomcat::package}-${tomcat}"]
 }

@@ -43,15 +43,15 @@ define tomcat::deployment(
 
   if $war {
     #Just load the war file from the specified location
-    file { $warfile:
+    file { "${warfile}":
       backup  => false,
       source  => $war,
     }
   }
   else {
     #Obtain the war file from nexus
-    include nexus
-    nexus::artifact { $warfile :
+    include ::nexus
+    nexus::artifact { "${warfile}" :
       nexus    => $nexus,
       repo     => $repo,
       group    => $group,
@@ -60,12 +60,12 @@ define tomcat::deployment(
     }
   }
 
-  exec { "rm -Rf $webapp":
-    subscribe   => File[$warfile],
+  exec { "rm -Rf ${webapp}":
+    subscribe   => File["{$warfile}"],
     notify      => Service["${tomcat::package}-${tomcat}"],
     refreshonly => true,
     path        => "/usr/bin:/usr/sbin:/bin",
   }
 
-  Exec["create instance at $tomcatBase"] -> File[$warfile]
+  Exec["create instance at $tomcatBase"] -> File["${warfile}"]
 }

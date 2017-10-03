@@ -30,7 +30,7 @@ class tomcat (
   $manage_group     = true
 ) {
   # Require these base packages are installed
-  package { $package :
+  package { "${package}" :
     ensure => $version,
   }
 
@@ -38,12 +38,12 @@ class tomcat (
   # It lets us quickly install Tomcat to any directory (see instance.pp)
   package { "${package}-user":
     ensure  => $version,
-    require => Package[$package],
+    require => Package["${package}"],
   }
 
   if $manage_user {
     # Ensure the tomcat user is present and has a home
-    user { $user :
+    user { "${user}" :
       ensure      => present,
       uid         => $uid,
       gid         => $group,
@@ -54,23 +54,23 @@ class tomcat (
 
   if $manage_group {
     # Ensure the tomcat group is present
-    group { $group :
+    group { "${group}" :
       ensure => present,
     }
   }
 
   # Ensure tomcat owns its home, without this puppet seems to create the
   # tomcat home owned by root
-  file { $home :
+  file { "${home}" :
     ensure  => directory,
     owner   => $user,
     group   => $group,
   }
 
   # install the package, but disable the default Tomcat service
-  service { $package :
+  service { "${package}" :
     enable    => false,
-    require   => Package[$package],
-    ensure    => stopped
+    require   => Package["${package}"],
+    ensure    => stopped,
   }
 }

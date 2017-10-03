@@ -1,5 +1,5 @@
-<%= jaasAppName %> {
-  <%= jaasLoginModule %> required
+<%= @jaasAppName %> {
+  <%= @jaasLoginModule %> required
   <%- @jaasConfigMap.each_pair do |key, value| -%>
     <%=key%>="<%=value%>"
   <%- end -%>;
