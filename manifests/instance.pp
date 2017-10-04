@@ -87,7 +87,7 @@ define tomcat::instance(
   # To use these, we must authbind
   if $http_port and $http_port <= 1024 {
     $authbind = true
-    authbind::byport { $http_port:
+    authbind::byport { "${http_port}" :
       uid     => $tomcat::uid,
       before  => Service[$service_name]
     }
