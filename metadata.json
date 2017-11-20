@@ -1,6 +1,6 @@
 {
   "name": "ceh-tomcat",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Centre for Ecology & Hydrology",
   "license": "GPL-2.0",
   "summary": "This is the tomcat module, it allows you to create instances of tomcat and deploy tomcat applications",
