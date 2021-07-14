@@ -23,3 +23,11 @@ JAVA_HOME=<%=java_home%>
 <% if @authbind %>
 AUTHBIND=yes
 <% end %>
+
+# If the application requires a large number of open files, the ulimits must be
+# set here as a workaround specifically for Tomcat applications. See following
+# link for documentation (https://ubuntuforums.org/showthread.php?t=1583041)
+<% if @max_file_limit %>
+ulimit -Hn <%=@max_file_limit%>
+ulimit -Sn <%=@max_file_limit%>
+<% end %>
