@@ -26,6 +26,7 @@
 # [*service_ensure*] The $service_ensure state
 # [*system_properties*] Defines a hash of system properties (-D) to be sent to java
 # [*non_standard_opts*] Defines the -X parameters to pass to java
+# [*max_file_limit*] Defines security limit for maximum open files for the Tomcat process
 #
 # === Requires
 # - The tomcat class
@@ -62,7 +63,8 @@ define tomcat::instance(
   $non_standard_opts       = ['mx1024M',
                               'ms256M',
                               'X:MaxPermSize=128M',
-                              'X:PermSize=64M']
+                              'X:PermSize=64M'],
+  $max_file_limit          = undef,
 ) {
   if ! defined(Class['tomcat']) {
     fail('You must include the tomcat base class before using any tomcat defined resources')
